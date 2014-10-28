@@ -61,8 +61,7 @@ import simit.statistics.GaussianDistribution;
 public class RadioSignal {
 
 	public static double fallingFactorHalf = 1.1;
-//	public static double staticRandomFactor = 0.3;
-	public static double staticRandomFactor = 0.0;
+	public static double staticRandomFactor = 0.3;
 	public static double radioStrengthCutoff = 0.1;
 	public static double dynamicRandomFactor = 0.05;
 
@@ -71,6 +70,14 @@ public class RadioSignal {
 	public static double receivingStartSNR = 4.0;
 	public static double corruptionSNR = 2.0;
 
+	public static double getStaticRandomFactor() {
+		return staticRandomFactor;
+	}
+
+	public static void setStaticRandomFactor(double staticRandomFactor) {
+		RadioSignal.staticRandomFactor = staticRandomFactor;
+	}
+	
 	public static double getStaticFading(double distanceSquare,
 			double maxSignalStrength) {
 		double staticRandomFading = 1.0 + staticRandomFactor
