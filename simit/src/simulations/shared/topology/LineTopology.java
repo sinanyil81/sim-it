@@ -46,6 +46,7 @@ package simulations.shared.topology;
  */
 import simit.deployment.DeploymentArea;
 import simit.deployment.NodeFactory;
+import simit.hardware.transceiver.RadioSignal;
 import simit.nodes.Position;
 
 public class LineTopology {
@@ -58,6 +59,8 @@ public class LineTopology {
 		boolean nextLine = false;
 		int direction = 1;
 
+		RadioSignal.setStaticRandomFactor(0.0);
+		
 		for (int i = 0; i < NodeFactory.numNodes; i++) {
 			NodeFactory.nodes[i].setPosition(new Position(positionX, positionY,0));
 			NodeFactory.nodes[i].getTransceiver().setTransmitPower(100);
