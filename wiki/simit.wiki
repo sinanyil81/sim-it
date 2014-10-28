@@ -1,8 +1,5 @@
-#summary One-sentence summary of this page.
+#Simit - A simulator for distributed wireless systemsç
 
 = Introduction =
 
-Sim-it is a simulator written in Java for wreless distributed systems.
-
-
-= Details =
+Sim-it is a simulator written in Java for wireless distributed systems.
