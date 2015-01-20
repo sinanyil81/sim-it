@@ -10,13 +10,35 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import simit.hardware.Register32;
+import simulations.shared.Logger;
 
 public class Reader {
 
 	BufferedReader in = null;
 	Vector<Object> events = new Vector<Object>();
+	
+	public static void main(String[] args) {
+		Reader  r = new Reader("src/simulations/synchronization/offline/timestamps.txt"," :[]=x");
+		System.out.println("Events loaded");
+		
+		Logger logger = new Logger("src/simulations/synchronization/offline/experiment.txt");
+		
+		for (Iterator<Object> iterator = r.getEvents().iterator(); iterator.hasNext();) {
+			Object object = (Object) iterator.next();
+			
+			if (object instanceof BroadcastEvent) {
+				logger.log(((BroadcastEvent)object).toString());
+			}
+			else if (object instanceof ReferenceEvent) {
+				logger.log(((ReferenceEvent)object).toString());
+			}
+			
+		}
+		
+		logger.close();
+	}
 
-	public Reader(String infile, String delimiters, String outFile) {
+	public Reader(String infile, String delimiters) {
 		try {
 			readFile(infile, delimiters);
 		} catch (FileNotFoundException e) {
