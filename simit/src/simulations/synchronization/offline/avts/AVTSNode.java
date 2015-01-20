@@ -5,6 +5,7 @@ import simulations.shared.avt.AdaptiveValueTracker;
 import simulations.synchronization.avts.LogicalClock;
 
 public class AVTSNode {
+	
 	private static final int TOLERANCE = 1;
 	
 	LogicalClock logicalClock = new LogicalClock();
@@ -52,10 +53,13 @@ public class AVTSNode {
 	
 	public Register32 local2Global(Register32 clock) {
 		return logicalClock.getValue(clock);
-	}
-	
+	}	
 	
 	public void preBroadcast(){
-		if(id==4) sequence++;
+		if(id==AVTSProtocol.REFERENCE) sequence++;
+	}
+
+	public float getSkew() {
+		return logicalClock.rate.getValue();
 	}
 }
