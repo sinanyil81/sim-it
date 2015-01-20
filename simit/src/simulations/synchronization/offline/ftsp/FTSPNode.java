@@ -91,7 +91,7 @@ public class FTSPNode {
 	}
 
 	public boolean is_synced() {
-		if (numEntries >= ENTRY_VALID_LIMIT || id == 20) // node 1 is always synced
+		if (numEntries >= ENTRY_VALID_LIMIT || id == 4) // node 1 is always synced
 			return true;
 		else
 			return false;
@@ -103,6 +103,6 @@ public class FTSPNode {
 	}
 	
 	public void preBroadcast(){
-		if(id==20) sequence++;
+		if(id==4) sequence++;
 	}
 }
