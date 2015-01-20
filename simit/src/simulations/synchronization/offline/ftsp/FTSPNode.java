@@ -3,7 +3,6 @@ package simulations.synchronization.offline.ftsp;
 import simit.hardware.Register32;
 import simulations.shared.regression.LeastSquares;
 import simulations.shared.regression.RegressionEntry;
-import simulations.synchronization.ftsp.FtspMessage;
 
 public class FTSPNode {
 	private static final int MAX_ENTRIES = 8;
@@ -16,6 +15,8 @@ public class FTSPNode {
 	int tableEntries = 0;
 	int numEntries;
 	int id;
+	
+	int sequence = 0;
 
 	public FTSPNode(int id) {
 		
@@ -27,13 +28,13 @@ public class FTSPNode {
 
 	private int numErrors = 0;
 
-	void addNewEntry(FtspMessage msg, Register32 localTime) {
+	void addNewEntry(Register32 globalTime, Register32 localTime) {
 		int i, freeItem = -1, oldestItem = 0;
 		Register32 age, oldestTime = new Register32();
 		int timeError;
 
 		// clear table if the received entry's been inconsistent for some time
-		timeError = local2Global(localTime).toInteger() - msg.clock.toInteger();
+		timeError = local2Global(localTime).toInteger() - globalTime.toInteger();
 
 		if (is_synced()
 				&& (timeError > ENTRY_THROWOUT_LIMIT || timeError < -ENTRY_THROWOUT_LIMIT)) {
@@ -71,7 +72,7 @@ public class FTSPNode {
 
 		table[freeItem].free = false;
 		table[freeItem].x = new Register32(localTime);
-		table[freeItem].y = msg.clock.toInteger() - localTime.toInteger();
+		table[freeItem].y = globalTime.toInteger() - localTime.toInteger();
 
 		/* calculate new least-squares line */
 		ls.calculate(table, tableEntries);
@@ -87,7 +88,7 @@ public class FTSPNode {
 		numEntries = 0;
 	}
 
-	private boolean is_synced() {
+	public boolean is_synced() {
 		if (numEntries >= ENTRY_VALID_LIMIT || id == 1) // node 1 is always synced
 			return true;
 		else
@@ -97,5 +98,9 @@ public class FTSPNode {
 	public Register32 local2Global(Register32 clock) {
 
 		return ls.calculateY(clock);
+	}
+	
+	public void preBroadcast(){
+		if(id==1) sequence++;
 	}
 }
