@@ -2,9 +2,18 @@ package simulations.synchronization.offline;
 
 import java.util.StringTokenizer;
 
+import simulations.shared.Logger;
+
 public class OfflineSimulation {
 	public static void main(String[] args) {
-		Reader.openFile("src/simulations/synchronization/offline/experiment.txt");
+		runProtocol(new FTSPProtocol(), 
+				"src/simulations/synchronization/offline/experiment.txt",
+				"src/simulations/synchronization/offline/ftsp.txt");
+	}
+	
+	private static void runProtocol(Protocol protocol, String experimentFile,String logFile){
+		Reader.openFile(experimentFile);
+		Logger logger = new Logger(logFile);
 		String line = null;
 		
 		while((line = Reader.nextLine())!=null){
@@ -14,32 +23,28 @@ public class OfflineSimulation {
 			String s = tokenizer.nextToken();
 			
 			if( s.equals(new String("#"))){
-				getInstantaneousLogicalClockValue(
-						Long.valueOf(tokenizer.nextToken(), 10),  // Experiment second
-						Long.valueOf(tokenizer.nextToken(), 10),  // Receiver Id 
-						Long.valueOf(tokenizer.nextToken(), 10)); // Receiver Local Clock
+				long experimentSecond =  Long.valueOf(tokenizer.nextToken(), 10);
+				long receiverId = Long.valueOf(tokenizer.nextToken(), 10);
+				long receiverLocalClock = Long.valueOf(tokenizer.nextToken(), 10);
+				
+				long receiverGlobalTime = protocol.getLogicalClock(receiverId,receiverLocalClock);
+				
+				logger.log(""+ experimentSecond +" "+receiverId + " " +  receiverGlobalTime);
+				
 			} 
 			else{
-				processMessage(
-						Long.valueOf(s, 10),  					  // Sender Id 
-						Long.valueOf(tokenizer.nextToken(), 10),  // Receiver Id
-						Long.valueOf(tokenizer.nextToken(), 10),  // Sender Local Clock 
-						Long.valueOf(tokenizer.nextToken(), 10)); // Receiver Local Clock
+				long senderId = Long.valueOf(s, 10);
+				long receiverId = Long.valueOf(tokenizer.nextToken(), 10);
+				long senderLocalClock = Long.valueOf(tokenizer.nextToken(), 10);
+				long receiverLocalClock = Long.valueOf(tokenizer.nextToken(), 10);
+				
+				long senderGlobalTime = protocol.getLogicalClock(senderId, senderLocalClock);
+				protocol.processMessage(senderId, receiverId, senderGlobalTime, receiverLocalClock);
+				
 			}
 			
-			
 		}
-	}
-
-	private static void processMessage(Long valueOf, Long valueOf2,
-			Long valueOf3, Long valueOf4) {
-		// TODO Auto-generated method stub
 		
-	}
-
-	private static void getInstantaneousLogicalClockValue(Long valueOf,
-			Long valueOf2, Long valueOf3) {
-		// TODO Auto-generated method stub
-		
+		logger.close();
 	}
 }
