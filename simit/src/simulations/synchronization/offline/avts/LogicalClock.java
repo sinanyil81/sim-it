@@ -40,8 +40,7 @@ import simulations.shared.avt.AdaptiveValueTracker;
 public class LogicalClock {
 
 	public Register32 value = new Register32();
-
-	public AdaptiveValueTracker rate = new AdaptiveValueTracker(-0.0002f, 0.0002f, 0.0f, 0.000000000001f, 0.00001f);
+	public AdaptiveValueTracker rate = new AdaptiveValueTracker(-0.0001f, 0.0001f, 0.0f, 0.00000000001f, 0.00001f);
 	Register32 updateLocalTime = new Register32();
 	
 	public LogicalClock(){

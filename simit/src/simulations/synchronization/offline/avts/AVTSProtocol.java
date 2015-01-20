@@ -4,7 +4,7 @@ import simit.hardware.Register32;
 import simulations.synchronization.offline.Protocol;
 
 public class AVTSProtocol implements Protocol{
-	
+	public static final int REFERENCE = 17;
 	AVTSNode nodes[] = new AVTSNode[20];
 	
 	public AVTSProtocol() {
@@ -32,6 +32,11 @@ public class AVTSProtocol implements Protocol{
 	@Override
 	public long getLogicalClock(int id, long localTime) {
 		return nodes[id-1].local2Global(new Register32(localTime)).toLong();
+	}
+
+	@Override
+	public float getRateMultiplier(int id) {
+		return nodes[id].getSkew();
 	}
 
 
