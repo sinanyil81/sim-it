@@ -16,4 +16,8 @@ public interface Protocol {
 	/* Returns the Global Time of the node with given ID when its local time was localTime.
 	 */
 	long getLogicalClock(int id, long localTime);
+	
+	/* Returns the Global Time of the node with given ID when its local time was localTime.
+	 */
+	float getRateMultiplier(int id);
 }
