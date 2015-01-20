@@ -107,7 +107,8 @@ public class OfflineSimulation {
 				while(clocks[j++]==0 && j<20); // find the first non-zero clock
 				
 				long skew = clocks[19] - clocks[j];
-				logger.log("" + experimentSecond + " " + skew);
+				//if(skew <= 5000) 
+					logger.log("" + experimentSecond + " " + skew);
 				for (int i = 0; i < clocks.length; i++) {
 					clocks[i] = 0;
 				}
