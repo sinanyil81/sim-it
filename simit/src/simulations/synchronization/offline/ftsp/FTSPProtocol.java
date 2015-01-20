@@ -5,6 +5,8 @@ import simulations.synchronization.offline.Protocol;
 
 public class FTSPProtocol implements Protocol {
 
+	public static final int REFERENCE = 17;
+
 	FTSPNode nodes[] = new FTSPNode[20];
 
 	public FTSPProtocol() {
@@ -34,5 +36,10 @@ public class FTSPProtocol implements Protocol {
 	public void preBroadcast(int senderId, long senderLocalTime) {
 		nodes[senderId-1].preBroadcast();
 		
+	}
+
+	@Override
+	public float getRateMultiplier(int id) {
+		return nodes[id].getSkew();
 	}
 }
