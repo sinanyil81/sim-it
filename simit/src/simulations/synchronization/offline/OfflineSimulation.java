@@ -6,22 +6,23 @@ import java.util.StringTokenizer;
 import simulations.shared.Logger;
 import simulations.synchronization.offline.avts.AVTSProtocol;
 import simulations.synchronization.offline.ftsp.FTSPProtocol;
+import simulations.synchronization.offline.simulation.Reader;
 
 public class OfflineSimulation {
 	public static void main(String[] args) {
 		runProtocol(new FTSPProtocol(),
 				"src/simulations/synchronization/offline/experiment.txt",
-				"src/simulations/synchronization/offline/ftsp.txt");
+				"src/simulations/synchronization/offline/ftsp/ftsp.txt");
 		
 		runProtocol(new AVTSProtocol(),
 				"src/simulations/synchronization/offline/experiment.txt",
-				"src/simulations/synchronization/offline/avts.txt");
+				"src/simulations/synchronization/offline/avts/avts.txt");
 		
-		evaluateResults("src/simulations/synchronization/offline/ftsp.txt",
-				"src/simulations/synchronization/offline/ftspResults.txt");
+		evaluateResults("src/simulations/synchronization/offline/ftsp/ftsp.txt",
+				"src/simulations/synchronization/offline/ftsp/ftspResults.txt");
 		
-		evaluateResults("src/simulations/synchronization/offline/avts.txt",
-				"src/simulations/synchronization/offline/avtsResults.txt");
+		evaluateResults("src/simulations/synchronization/offline/avts/avts.txt",
+				"src/simulations/synchronization/offline/avts/avtsResults.txt");
 	}
 
 	private static void runProtocol(Protocol protocol, String experimentFile,
