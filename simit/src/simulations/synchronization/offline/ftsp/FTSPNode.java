@@ -6,8 +6,8 @@ import simulations.shared.regression.RegressionEntry;
 
 public class FTSPNode {
 	private static final int MAX_ENTRIES = 8;
-	private static final int ENTRY_THROWOUT_LIMIT = 1000;
-	private static final int ENTRY_VALID_LIMIT = 4; // number of entries to
+	private static final int ENTRY_THROWOUT_LIMIT = 5000;
+	private static final int ENTRY_VALID_LIMIT = 3; // number of entries to
 													// become synchronized
 
 	LeastSquares ls = new LeastSquares();
@@ -24,6 +24,8 @@ public class FTSPNode {
 		for (int i = 0; i < table.length; i++) {
 			table[i] = new RegressionEntry();
 		}
+		
+		clearTable();
 	}
 
 	private int numErrors = 0;
@@ -89,7 +91,7 @@ public class FTSPNode {
 	}
 
 	public boolean is_synced() {
-		if (numEntries >= ENTRY_VALID_LIMIT || id == 1) // node 1 is always synced
+		if (numEntries >= ENTRY_VALID_LIMIT || id == 20) // node 1 is always synced
 			return true;
 		else
 			return false;
@@ -101,6 +103,6 @@ public class FTSPNode {
 	}
 	
 	public void preBroadcast(){
-		if(id==1) sequence++;
+		if(id==20) sequence++;
 	}
 }
