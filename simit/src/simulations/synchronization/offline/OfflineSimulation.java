@@ -17,15 +17,22 @@ public class OfflineSimulation {
 		Logger logger = new Logger(logFile);
 		String line = null;
 		
+		boolean broadcast = false;
+		
 		while((line = Reader.nextLine())!=null){
-			if(line.equals(new String(""))) continue;
+			
+			if(line.equals(new String(""))){
+				broadcast = false;
+				continue;
+			}
+			
 			StringTokenizer tokenizer = new StringTokenizer(line," ");
 			
 			String s = tokenizer.nextToken();
 			
 			if( s.equals(new String("#"))){
 				long experimentSecond =  Long.valueOf(tokenizer.nextToken(), 10);
-				long receiverId = Long.valueOf(tokenizer.nextToken(), 10);
+				int receiverId = Integer.valueOf(tokenizer.nextToken(), 10);
 				long receiverLocalClock = Long.valueOf(tokenizer.nextToken(), 10);
 				
 				long receiverGlobalTime = protocol.getLogicalClock(receiverId,receiverLocalClock);
@@ -34,12 +41,19 @@ public class OfflineSimulation {
 				
 			} 
 			else{
-				long senderId = Long.valueOf(s, 10);
-				long receiverId = Long.valueOf(tokenizer.nextToken(), 10);
+				
+				int senderId = Integer.valueOf(s, 10);
+				int receiverId = Integer.valueOf(tokenizer.nextToken(), 10);
 				long senderLocalClock = Long.valueOf(tokenizer.nextToken(), 10);
 				long receiverLocalClock = Long.valueOf(tokenizer.nextToken(), 10);
 				
 				long senderGlobalTime = protocol.getLogicalClock(senderId, senderLocalClock);
+				
+				if(broadcast == false){
+					broadcast = true;
+					protocol.preBroadcast(senderId, senderLocalClock);
+				}
+				
 				protocol.processMessage(senderId, receiverId, senderGlobalTime, receiverLocalClock);
 				
 			}
