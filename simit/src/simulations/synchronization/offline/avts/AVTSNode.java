@@ -32,12 +32,11 @@ public class AVTSNode {
 		int skew = calculateSkew(GlobalTime,LocalTime);
 		
 		if(Math.abs(skew)>1000){
-			numErrors++;
-			if(numErrors<2)
+			if(++numErrors<2)
 				return;
-			else
-				numErrors = 0;
 		}
+		
+		numErrors = 0;
 			
 		logicalClock.setValue(GlobalTime, LocalTime);
 
@@ -57,6 +56,6 @@ public class AVTSNode {
 	
 	
 	public void preBroadcast(){
-		if(id==20) sequence++;
+		if(id==4) sequence++;
 	}
 }
