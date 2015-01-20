@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import simulations.shared.Logger;
+import simulations.synchronization.offline.avts.AVTSProtocol;
 import simulations.synchronization.offline.ftsp.FTSPProtocol;
 
 public class OfflineSimulation {
@@ -11,8 +12,16 @@ public class OfflineSimulation {
 		runProtocol(new FTSPProtocol(),
 				"src/simulations/synchronization/offline/experiment.txt",
 				"src/simulations/synchronization/offline/ftsp.txt");
+		
+		runProtocol(new AVTSProtocol(),
+				"src/simulations/synchronization/offline/experiment.txt",
+				"src/simulations/synchronization/offline/avts.txt");
+		
 		evaluateResults("src/simulations/synchronization/offline/ftsp.txt",
 				"src/simulations/synchronization/offline/ftspResults.txt");
+		
+		evaluateResults("src/simulations/synchronization/offline/avts.txt",
+				"src/simulations/synchronization/offline/avtsResults.txt");
 	}
 
 	private static void runProtocol(Protocol protocol, String experimentFile,

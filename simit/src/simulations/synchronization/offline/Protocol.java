@@ -11,7 +11,7 @@ public interface Protocol {
 	 * senderGlobalTime. This message is received by node receiverID and the message
 	 * receipt time the local clock of the receiver was receiverLocal.
 	 */
-	void processMessage(int senderId, int receiverId, long senderGlobalTime, long receiverLocal);
+	void processMessage(int senderId, int receiverId, long senderGlobalTime, long receiverLocalTime);
 	
 	/* Returns the Global Time of the node with given ID when its local time was localTime.
 	 */
