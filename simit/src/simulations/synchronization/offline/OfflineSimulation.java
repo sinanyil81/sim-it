@@ -3,6 +3,7 @@ package simulations.synchronization.offline;
 import java.util.StringTokenizer;
 
 import simulations.shared.Logger;
+import simulations.synchronization.offline.ftsp.FTSPProtocol;
 
 public class OfflineSimulation {
 	public static void main(String[] args) {
