@@ -23,11 +23,22 @@ public class AVTSNode {
 
 		return myClock.subtract(neighborClock).toInteger();
 	}
+	
+	int numErrors = 0;
 
 	public void adjustClock(Register32 GlobalTime, Register32 LocalTime) {
 		logicalClock.update(LocalTime);
 
 		int skew = calculateSkew(GlobalTime,LocalTime);
+		
+		if(Math.abs(skew)>1000){
+			numErrors++;
+			if(numErrors<2)
+				return;
+			else
+				numErrors = 0;
+		}
+			
 		logicalClock.setValue(GlobalTime, LocalTime);
 
 		if (skew > TOLERANCE) {

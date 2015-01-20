@@ -1,4 +1,4 @@
-package simulations.synchronization.offline;
+package simulations.synchronization.offline.simulation;
 
 import java.io.BufferedReader;
 import java.io.File;

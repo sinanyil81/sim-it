@@ -1,4 +1,4 @@
-package simulations.synchronization.offline;
+package simulations.synchronization.offline.simulation;
 
 import java.util.Iterator;
 import java.util.Vector;
