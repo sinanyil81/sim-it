@@ -34,7 +34,7 @@ public class ReferenceEvent {
 		for (Iterator<Register32> iterator = receiverClocks.iterator(); iterator.hasNext();) {
 			Register32 receiverClock = (Register32) iterator.next();
 			Long receiverId = receivers.elementAt(i++);
-			str += "# " + second + "" + receiverId.longValue() + " " + receiverClock.toLong() + "\n";
+			str += "# " + second + " " + receiverId.longValue() + " " + receiverClock.toLong() + "\n";
 		}
 		
 		return str;

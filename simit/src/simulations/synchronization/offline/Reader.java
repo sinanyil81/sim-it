@@ -14,7 +14,7 @@ import simulations.shared.Logger;
 
 public class Reader {
 
-	BufferedReader in = null;
+	static BufferedReader in = null;
 	Vector<Object> events = new Vector<Object>();
 	
 	public static void main(String[] args) {
@@ -44,6 +44,24 @@ public class Reader {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void openFile(String infile) {
+		try {
+			in = new BufferedReader(new FileReader(new File(infile)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static String nextLine(){
+		try {
+			return in.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private void readFile(String file, String delimiters)
