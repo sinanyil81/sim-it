@@ -91,7 +91,7 @@ public class FTSPNode {
 	}
 
 	public boolean is_synced() {
-		if (numEntries >= ENTRY_VALID_LIMIT || id == 4) // node 1 is always synced
+		if (numEntries >= ENTRY_VALID_LIMIT || id == FTSPProtocol.REFERENCE) // node 1 is always synced
 			return true;
 		else
 			return false;
@@ -102,7 +102,11 @@ public class FTSPNode {
 		return ls.calculateY(clock);
 	}
 	
+	public float getSkew(){
+		return ls.getSlope();
+	}
+	
 	public void preBroadcast(){
-		if(id==4) sequence++;
+		if(id==FTSPProtocol.REFERENCE) sequence++;
 	}
 }
