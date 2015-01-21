@@ -5,7 +5,7 @@ import simulations.synchronization.offline.Protocol;
 
 public class FTSPProtocol implements Protocol {
 
-	public static final int REFERENCE = 17;
+	public static final int REFERENCE = 1;
 
 	FTSPNode nodes[] = new FTSPNode[20];
 
