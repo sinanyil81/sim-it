@@ -81,10 +81,8 @@ public class OfflineSimulation {
 					protocol.preBroadcast(senderId, senderLocalClock);
 				}
 
-				//if (receiverId != 1 && receiverId != 18) // these nodes are
-															// problematic
-					protocol.processMessage(senderId, receiverId,
-							senderGlobalTime, receiverLocalClock);
+				protocol.processMessage(senderId, receiverId, senderGlobalTime,
+						receiverLocalClock);
 
 			}
 
@@ -108,9 +106,9 @@ public class OfflineSimulation {
 			long second = Long.valueOf(tokenizer.nextToken(), 10);
 			int id = Integer.valueOf(tokenizer.nextToken(), 10);
 			long clock = Long.valueOf(tokenizer.nextToken(), 10);
-			
-//			float rate = Float.intBitsToFloat(Integer.valueOf(
-//					tokenizer.nextToken(), 10));
+
+			// float rate = Float.intBitsToFloat(Integer.valueOf(
+			// tokenizer.nextToken(), 10));
 
 			if (experimentSecond == -1) {
 				experimentSecond = second;
@@ -124,20 +122,21 @@ public class OfflineSimulation {
 
 				long skew = clocks[19] - clocks[j];
 
-				if (skew >= 200) skew = 200; 
+				if (skew >= 200)
+					skew = 200;
 
 				logger.log("" + experimentSecond + " " + skew + rates);
-				if (experimentSecond > 20000) break;
-				
+				if (experimentSecond > 20000)
+					break;
+
 				for (int i = 0; i < clocks.length; i++) {
 					clocks[i] = 0;
 				}
 				experimentSecond = second;
-//				rates = "";
+				// rates = "";
 			}
 
-			//if (id != 1 && id != 18)
-				clocks[id - 1] = clock;
+			clocks[id - 1] = clock;
 
 			// rates += " " + (int)(rate*100000000.0f);
 
