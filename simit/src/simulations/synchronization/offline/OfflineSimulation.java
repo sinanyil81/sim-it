@@ -9,14 +9,37 @@ import simulations.synchronization.offline.ftsp.FTSPProtocol;
 import simulations.synchronization.offline.simulation.Reader;
 
 public class OfflineSimulation {
+	
+	/*
+	 * Consider the timestamp data in the experiment file and execute
+	 * the time synchronization protocol.
+	 * 
+	 * The data was collected from a tesbed 5x4 grid topology.
+	 * 
+	 *  1 -  2 -  3 -  4
+	 *  |    |    |    |
+	 *  5 -  6 -  7 -  8
+	 *  |    |    |    |
+	 *  9  - 10 - 11 - 12
+	 *  |    |    |    |
+	 *  13 - 14 - 15 - 16
+	 *  |    |    |    |
+	 *  17 - 18 - 19 - 20
+	 *  
+	 */
+	
+	private final static int GRID = 0;
+	private final static int LINE = 1;
+		
 	public static void main(String[] args) {
+
 		runProtocol(new FTSPProtocol(),
 				"src/simulations/synchronization/offline/experiment2.txt",
-				"src/simulations/synchronization/offline/ftsp/ftsp.txt");
+				"src/simulations/synchronization/offline/ftsp/ftsp.txt",LINE);
 
 		runProtocol(new AVTSProtocol(),
 				"src/simulations/synchronization/offline/experiment2.txt",
-				"src/simulations/synchronization/offline/avts/avts.txt");
+				"src/simulations/synchronization/offline/avts/avts.txt",LINE);
 
 		evaluateResults(
 				"src/simulations/synchronization/offline/ftsp/ftsp.txt",
@@ -26,9 +49,59 @@ public class OfflineSimulation {
 				"src/simulations/synchronization/offline/avts/avts.txt",
 				"src/simulations/synchronization/offline/avts/avtsResults.txt");
 	}
+	
+	/*
+	 *  The data was collected from a tesbed 5x4 grid topology.
+	 * 
+	 *  1 -  2 -  3 -  4
+	 *  |    |    |    |
+	 *  5 -  6 -  7 -  8
+	 *  |    |    |    |
+	 *  9  - 10 - 11 - 12
+	 *  |    |    |    |
+	 *  13 - 14 - 15 - 16
+	 *  |    |    |    |
+	 *  17 - 18 - 19 - 20
+	 *  
+	 *  To simulate line topology, we need to do this check.
+	 *  
+	 */
+	private static boolean isAllowedToReceive(int topology, int receiver, int sender){
+		
+		if(topology == GRID) // the data was already collected from grid topology
+			return true;
+		else if(topology  == LINE){
+			if(receiver == 8 || receiver == 9 || receiver == 16 || receiver == 17){
+				if (receiver - sender == 4)
+					return true;
+			}
+			else if(receiver <= 4 ){
+				if (receiver - sender == 1)
+					return true;
+			}
+			else if (receiver >= 5 && receiver <=8){
+				if (receiver - sender == -1)
+					return true;
+			}
+			else if (receiver >= 9 && receiver <=12){
+				if (receiver - sender == 1)
+					return true;
+			}
+			else if (receiver >= 13 && receiver <=16){
+				if (receiver - sender == -1)
+					return true;
+			}
+			else if (receiver >= 17 && receiver <=20){
+				if (receiver - sender == 1)
+					return true;
+			}
+		}
+		
+		return false;
+	}
 
 	private static void runProtocol(Protocol protocol, String experimentFile,
-			String logFile) {
+			String logFile, int topology) {
 		Reader.openFile(experimentFile);
 		Logger logger = new Logger(logFile);
 		String line = null;
@@ -81,8 +154,8 @@ public class OfflineSimulation {
 					protocol.preBroadcast(senderId, senderLocalClock);
 				}
 
-				protocol.processMessage(senderId, receiverId, senderGlobalTime,
-						receiverLocalClock);
+				if(isAllowedToReceive(topology, receiverId, senderId))
+					protocol.processMessage(senderId, receiverId, senderGlobalTime,receiverLocalClock);
 
 			}
 
@@ -122,13 +195,8 @@ public class OfflineSimulation {
 
 				long skew = clocks[19] - clocks[j];
 
-				if (skew >= 200)
-					skew = 200;
-
 				logger.log("" + experimentSecond + " " + skew + rates);
-				if (experimentSecond > 20000)
-					break;
-
+				
 				for (int i = 0; i < clocks.length; i++) {
 					clocks[i] = 0;
 				}
