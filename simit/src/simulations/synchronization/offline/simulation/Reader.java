@@ -18,10 +18,10 @@ public class Reader {
 	Vector<Object> events = new Vector<Object>();
 	
 	public static void main(String[] args) {
-		Reader  r = new Reader("src/simulations/synchronization/offline/simulation/timestamps.txt"," :[]=x");
+		Reader  r = new Reader("src/simulations/synchronization/offline/simulation/timestamps2.txt"," :[]=x");
 		System.out.println("Events loaded");
 		
-		Logger logger = new Logger("src/simulations/synchronization/offline/experiment.txt");
+		Logger logger = new Logger("src/simulations/synchronization/offline/experiment2.txt");
 		
 		for (Iterator<Object> iterator = r.getEvents().iterator(); iterator.hasNext();) {
 			Object object = (Object) iterator.next();
