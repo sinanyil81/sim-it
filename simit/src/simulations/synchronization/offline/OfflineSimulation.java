@@ -11,11 +11,11 @@ import simulations.synchronization.offline.simulation.Reader;
 public class OfflineSimulation {
 	public static void main(String[] args) {
 		runProtocol(new FTSPProtocol(),
-				"src/simulations/synchronization/offline/experiment.txt",
+				"src/simulations/synchronization/offline/experiment2.txt",
 				"src/simulations/synchronization/offline/ftsp/ftsp.txt");
 
 		runProtocol(new AVTSProtocol(),
-				"src/simulations/synchronization/offline/experiment.txt",
+				"src/simulations/synchronization/offline/experiment2.txt",
 				"src/simulations/synchronization/offline/avts/avts.txt");
 
 		evaluateResults(
@@ -81,7 +81,7 @@ public class OfflineSimulation {
 					protocol.preBroadcast(senderId, senderLocalClock);
 				}
 
-				if (receiverId != 1 && receiverId != 18) // these nodes are
+				//if (receiverId != 1 && receiverId != 18) // these nodes are
 															// problematic
 					protocol.processMessage(senderId, receiverId,
 							senderGlobalTime, receiverLocalClock);
@@ -136,7 +136,7 @@ public class OfflineSimulation {
 //				rates = "";
 			}
 
-			if (id != 1 && id != 18)
+			//if (id != 1 && id != 18)
 				clocks[id - 1] = clock;
 
 			// rates += " " + (int)(rate*100000000.0f);
