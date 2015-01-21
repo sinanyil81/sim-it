@@ -4,7 +4,7 @@ import simit.hardware.Register32;
 import simulations.synchronization.offline.Protocol;
 
 public class AVTSProtocol implements Protocol{
-	public static final int REFERENCE = 17;
+	public static final int REFERENCE = 1;
 	AVTSNode nodes[] = new AVTSNode[20];
 	
 	public AVTSProtocol() {
