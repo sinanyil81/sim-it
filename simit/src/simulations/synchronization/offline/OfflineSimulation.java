@@ -14,7 +14,8 @@ public class OfflineSimulation {
 	 * Consider the timestamp data in the experiment file and execute
 	 * the time synchronization protocol.
 	 * 
-	 * The data was collected from a tesbed 5x4 grid topology.
+	 * The data was collected from a tesbed 5x4 grid topology. Each node were sending
+	 * beacons with a period of 30 seconds.
 	 * 
 	 *  1 -  2 -  3 -  4
 	 *  |    |    |    |
