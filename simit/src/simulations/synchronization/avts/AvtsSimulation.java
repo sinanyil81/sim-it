@@ -53,16 +53,16 @@ public class AvtsSimulation extends Simulation implements TimerHandler {
 	Timer timer = new Timer(new Clock32(),this);
 	
 	public static void main(String[] args) {
-		Simulator.getInstance().startSimulation(new AvtsSimulation(20000));
+		Simulator.getInstance().startSimulation(new AvtsSimulation(20,20000));
 	}
 	
-	public AvtsSimulation(int durationTime){
+	public AvtsSimulation(int numNodes,int durationTime){
 		super(durationTime);
 		
 		DeploymentArea area = new DeploymentArea(300,300,0,2);
 		
 		/* create nodes that are randomly deployed on the given area*/
-		NodeFactory.createNodes("simulations.synchronization.avts.AvtsNode", 150,area);
+		NodeFactory.createNodes("simulations.synchronization.avts.AvtsNode", numNodes,area);
 
 		/* create mobility policy that will move nodes */
 //		new MobilityManager("simit.nodes.mobility.RandomWayPoint");
@@ -81,6 +81,7 @@ public class AvtsSimulation extends Simulation implements TimerHandler {
 	@Override
 	public void exit() {
 		logger.close();	
+		GUI.stop();
 		System.out.println("Simulation finished!");
 	}
 
