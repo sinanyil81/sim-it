@@ -6,8 +6,8 @@ import simulations.shared.Logger;
 public class SomeTests {
 
 	public static void main(String[] args) {
-		gradientDescentAlgorithm();
-
+		//gradientDescentAlgorithm();
+		asymptoticVariance();
 	}
 
 	static void gradientDescentAlgorithm() {
@@ -83,4 +83,32 @@ public class SomeTests {
 		}
 		logger.close();
 	}
+	
+	static void asymptoticVariance() {
+		Logger logger = new Logger("asymptotic.txt");
+		
+		double f = 1000000.0;
+		double B = 30000000;
+		
+		double sigmasquare_w = 1/100000000.0;
+		double sigmasquare_v = 5/10000.0;
+
+		double nsquare_w = sigmasquare_w/f;
+		double nsquare_t = sigmasquare_v*f; 
+		
+		double alpha = 0.0;
+		
+		for (int i = 0; i < 20; i++) {
+			
+			double error = alpha*B*B*((3-alpha*f*B)*nsquare_t + 2*nsquare_w*f*f*B*B)*(1+nsquare_w);
+			error /= 2*B*f - alpha*B*B*f*f*(1+nsquare_w);
+			error += nsquare_t/(f*f);
+			error += 2*nsquare_w*B*B;
+			error = Math.sqrt(error);
+			logger.log(""+alpha+" "+error*10000.0);
+			alpha += 0.1;
+		}
+		logger.close();
+	}
+
 }
