@@ -18,7 +18,7 @@ public class PiSyncNode {
 		Register32 neighborClock = GlobalTime;
 		Register32 myClock = logicalClock.getValue(LocalTime);
 
-		return myClock.subtract(neighborClock).toInteger();
+		return neighborClock.subtract(myClock).toInteger();
 	}
 	
 	private static final int BEACON_RATE = 30000000;
