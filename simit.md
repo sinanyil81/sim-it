@@ -1,0 +1,5 @@
+#Simit - A simulator for distributed wireless systemsç
+
+# Introduction #
+
+Sim-it is a simulator written in Java for wireless distributed systems.

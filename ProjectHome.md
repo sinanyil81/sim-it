@@ -1,0 +1,1 @@
+Simulate It (sim-it) is a simulator written in Java to simulate distributed network protocols.
