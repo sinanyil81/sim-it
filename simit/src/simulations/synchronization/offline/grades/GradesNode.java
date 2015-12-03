@@ -22,7 +22,7 @@ public class GradesNode {
 	}
 	
 	private static final int BEACON_RATE = 30000000;
-	float K_max = 1.0f / (float) (BEACON_RATE);
+	float K_max = 1.0f / (float) (BEACON_RATE*BEACON_RATE);
 
 	
 	int numErrors = 0;
@@ -56,6 +56,8 @@ public class GradesNode {
 		else{
             alpha /=3.0f;
 		}
+		
+		float derivative = 2*BEACON_RATE*skew;
 		
 		if (alpha > K_max) alpha = K_max;         
         if(alpha < 0.0000000001f) alpha = 0.0000000001f;
