@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 import simulations.shared.Logger;
 import simulations.synchronization.offline.avts.AVTSProtocol;
 import simulations.synchronization.offline.ftsp.FTSPProtocol;
+import simulations.synchronization.offline.grades.GradesProtocol;
 import simulations.synchronization.offline.piSync.PiSyncProtocol;
 import simulations.synchronization.offline.simulation.Reader;
 
