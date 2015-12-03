@@ -41,23 +41,31 @@ public class OfflineSimulation {
 	private final static int LINE = 1;
 		
 	public static void main(String[] args) {
+		
+
+		runProtocol(new GradesProtocol(),
+				"src/simulations/synchronization/offline/experiment2.txt",
+				"src/simulations/synchronization/offline/grades/grades.txt",LINE);
 
 		runProtocol(new PiSyncProtocol(),
 				"src/simulations/synchronization/offline/experiment2.txt",
 				"src/simulations/synchronization/offline/piSync/piSync.txt",LINE);
-		
-		evaluateResults(
-				"src/simulations/synchronization/offline/piSync/piSync.txt",
-				"src/simulations/synchronization/offline/piSync/piSyncResults.txt");
-		
-				
+						
 		runProtocol(new FTSPProtocol(),
 				"src/simulations/synchronization/offline/experiment2.txt",
 				"src/simulations/synchronization/offline/ftsp/ftsp.txt",LINE);
 
 		runProtocol(new AVTSProtocol(),
 				"src/simulations/synchronization/offline/experiment2.txt",
-				"src/simulations/synchronization/offline/avts/avts.txt",LINE);
+				"src/simulations/synchronization/offline/avts/avts.txt",LINE);		
+		
+		evaluateResults(
+				"src/simulations/synchronization/offline/grades/grades.txt",
+				"src/simulations/synchronization/offline/grades/gradesResults.txt");
+		
+		evaluateResults(
+				"src/simulations/synchronization/offline/piSync/piSync.txt",
+				"src/simulations/synchronization/offline/piSync/piSyncResults.txt");
 
 		evaluateResults(
 				"src/simulations/synchronization/offline/ftsp/ftsp.txt",
