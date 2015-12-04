@@ -21,12 +21,13 @@ public class GradesNode {
 		return neighborClock.subtract(myClock).toInteger();
 	}
 	
-	private static final int BEACON_RATE = 30000000;
-	float K_max = 1.0f / (float) (BEACON_RATE*BEACON_RATE);
+	private static final long BEACON_RATE = 30000000;
+	double K_max = 1.0 / (double) (BEACON_RATE*BEACON_RATE);
+	double K_min = K_max*0.000001;
 
 	
 	int numErrors = 0;
-	float alpha = K_max;
+	double alpha = K_max;	
 	int lastSkew=0;
 
 	public void adjustClock(Register32 GlobalTime, Register32 LocalTime) {
@@ -51,20 +52,20 @@ public class GradesNode {
 		logicalClock.setValue(GlobalTime, LocalTime);
 
 		if(Math.signum(skew) == Math.signum(lastSkew)){
-            alpha *= 2.0f;                  
+            alpha *= 2.0;                  
 		}
 		else{
-            alpha /=3.0f;
+            alpha /=3.0;
 		}
 		
-		float derivative = 2*BEACON_RATE*skew;
+		double derivative = 2.0*((double)BEACON_RATE*skew);
 		
 		if (alpha > K_max) alpha = K_max;         
-        if(alpha < 0.0000000001f) alpha = 0.0000000001f;
+        if(alpha < K_min) alpha =K_min;
         
         lastSkew = skew;
                         
-        logicalClock.rate += alpha*(float)(2*skew);
+        logicalClock.rate += derivative*alpha;
 	}
 	
 	public Register32 local2Global(Register32 clock) {
