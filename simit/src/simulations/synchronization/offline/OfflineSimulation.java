@@ -222,7 +222,8 @@ public class OfflineSimulation {
 
 				long skew = clocks[19] - clocks[j];
 
-				logger.log("" + experimentSecond + " " + skew + rates);
+				if(skew!=0)
+					logger.log("" + experimentSecond + " " + skew + rates);
 				
 				for (int i = 0; i < clocks.length; i++) {
 					clocks[i] = 0;
