@@ -23,7 +23,7 @@ public class GradesNode {
 	
 	private static final long BEACON_RATE = 30000000;
 	double K_max = 1.0 / (double) (BEACON_RATE*BEACON_RATE);
-	double K_min = K_max*0.000001;
+	double K_min = K_max*0.001;
 
 	
 	int numErrors = 0;
