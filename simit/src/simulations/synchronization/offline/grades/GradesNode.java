@@ -23,12 +23,13 @@ public class GradesNode {
 	
 	private static final long BEACON_RATE = 30000000;
 	double K_max = 1.0 / (double) (BEACON_RATE*BEACON_RATE);
-	double K_min = K_max*0.001;
+	double K_min = K_max*0.0001;
 
 	
 	int numErrors = 0;
 	double alpha = K_max;	
 	int lastSkew=0;
+	double lastDerivative = 0.0;
 
 	public void adjustClock(Register32 GlobalTime, Register32 LocalTime) {
 		logicalClock.update(LocalTime);
@@ -50,20 +51,21 @@ public class GradesNode {
 		numErrors = 0;
 			
 		logicalClock.setValue(GlobalTime, LocalTime);
-
-		if(Math.signum(skew) == Math.signum(lastSkew)){
+		
+		double derivative = 2.0*((double)BEACON_RATE*skew);
+		
+		if(Math.signum(derivative) == Math.signum(lastDerivative)){
             alpha *= 2.0;                  
 		}
 		else{
             alpha /=3.0;
 		}
 		
-		double derivative = 2.0*((double)BEACON_RATE*skew);
-		
 		if (alpha > K_max) alpha = K_max;         
         if(alpha < K_min) alpha =K_min;
         
         lastSkew = skew;
+        lastDerivative = derivative;
                         
         logicalClock.rate += derivative*alpha;
 	}
