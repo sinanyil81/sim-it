@@ -22,7 +22,7 @@ public class PiSyncNode {
 	}
 	
 	private static final int BEACON_RATE = 30000000;
-	float K_max = 1.0f / (float) (BEACON_RATE);
+	float K_max = 0.9f / (float) (BEACON_RATE);
 	
 	int numErrors = 0;
 	float alpha = K_max;
@@ -57,7 +57,7 @@ public class PiSyncNode {
 		}
 		
 		if (alpha > K_max) alpha = K_max;         
-        if(alpha < 0.0000000001f) alpha = 0.0000000001f;
+        if(alpha < 0.00000000001f) alpha = 0.00000000001f;
         
         lastSkew = skew;
                         
