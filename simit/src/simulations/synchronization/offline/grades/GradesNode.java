@@ -22,19 +22,22 @@ public class GradesNode {
 	}
 	
 	private static final long BEACON_RATE = 30000000;
-	double K_max = 1.0 / (double) (BEACON_RATE*BEACON_RATE);
-	double K_min = K_max*0.0001;
+	double K_max = 0.9/((double)BEACON_RATE*BEACON_RATE);
+	//double K_max = 1.0;
+	double K_min = K_max*0.009;
 
 	
 	int numErrors = 0;
 	double alpha = K_max;	
 	int lastSkew=0;
-	double lastDerivative = 0.0;
+	double deltaRate = 0.0;
 
 	public void adjustClock(Register32 GlobalTime, Register32 LocalTime) {
+		int Progress = logicalClock.updateLocalTime.toInteger(); 
 		logicalClock.update(LocalTime);
+		Progress = LocalTime.subtract(Progress).toInteger();
 
-		int skew = calculateSkew(GlobalTime,LocalTime);
+		int skew = -calculateSkew(GlobalTime,LocalTime);
 		
 		if(Math.abs(skew)>1000){
 			if(++numErrors<2)
@@ -49,25 +52,24 @@ public class GradesNode {
 		}
 		
 		numErrors = 0;
-			
+		
 		logicalClock.setValue(GlobalTime, LocalTime);
-		
-		double derivative = 2.0*((double)BEACON_RATE*skew);
-		
-		if(Math.signum(derivative) == Math.signum(lastDerivative)){
-            alpha *= 2.0;                  
+
+		if(Math.signum(skew) == Math.signum(lastSkew)){
+            alpha *= 2;                  
 		}
 		else{
-            alpha /=3.0;
+            alpha /= 3;
 		}
 		
+		double derivative =2.0*(double)(skew)*(double)BEACON_RATE;
+								
 		if (alpha > K_max) alpha = K_max;         
         if(alpha < K_min) alpha =K_min;
         
         lastSkew = skew;
-        lastDerivative = derivative;
-                        
-        logicalClock.rate += derivative*alpha;
+              
+        logicalClock.rate -= derivative*alpha;
 	}
 	
 	public Register32 local2Global(Register32 clock) {
