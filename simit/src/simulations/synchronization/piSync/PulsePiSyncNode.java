@@ -89,7 +89,7 @@ public class PulsePiSyncNode extends Node implements TimerHandler {
 
         int lastSkew;
         float K_max = 1.0f / (float) (BEACON_RATE);
-    	float K_min = 0.00000001f;
+    	float K_min = 0.000000001f;
     	
         float alpha = K_max;
         

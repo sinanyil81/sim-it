@@ -85,7 +85,7 @@ public class PiSyncNode extends Node implements TimerHandler {
         int lastSkew;
         
         float K_max = 1.0f / (float) (BEACON_RATE);
-        float K_min = 0.00000001f;
+    	float K_min = 0.0000000001f;
     	
     	int numErrors = 0;
     	
