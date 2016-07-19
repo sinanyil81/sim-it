@@ -44,7 +44,6 @@ public class PulseSyncNode extends Node implements TimerHandler{
 		CLOCK.setDynamicDrift();
 			
 		timer0 = new Timer(CLOCK,this);		
-		ROOT_ID = NODE_ID;
 		sequence = 0;
 				
 		CLOCK.setValue(new Register32(Math.abs(Distribution.getRandom().nextInt())));

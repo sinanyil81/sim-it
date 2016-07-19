@@ -38,24 +38,37 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import simit.core.Simulator;
+import simit.statistics.Distribution;
 import simulations.shared.Logger;
 import simulations.synchronization.avts.AvtsSimulation;
+import simulations.synchronization.ftsp.FtspSimulation;
 import simulations.synchronization.grades.GradesSimulation;
 import simulations.synchronization.offline.simulation.Reader;
+import simulations.synchronization.piSync.PiSyncSimulation;
+import simulations.synchronization.pulse.PulseSyncSimulation;
 
 
 
 public class ScalabilitySimulations {
 		
 	public static void main(String[] args) {
-		Logger logGrades = new Logger("Grades.txt");
-		Logger logAvts = new Logger("Avts.txt");
-		for(int i=10;i<=100;i+=10){
-			Simulator.getInstance().startSimulation(new AvtsSimulation(i,20000));
-			logAvts.log(evaluateResults("logFile.txt", i));
-			Simulator.getInstance().startSimulation(new GradesSimulation(i,20000));
-			logGrades.log(evaluateResults("logFile.txt", i));
-		}
+//		
+		Distribution.setSeed(0xabcdef);
+		
+		//Simulator.getInstance().startSimulation(new PulseSyncSimulation(20,10000));	
+		Simulator.getInstance().startSimulation(new PiSyncSimulation(20,10000));	
+		
+//		Simulator.getInstance().startSimulation(new FtspSimulation(10000));
+//		logFtsp.log(evaluateResults("logFile.txt", 20));
+		
+//		
+//		for(int i=10;i<=100;i+=10){
+//			Simulator.getInstance().startSimulation(new PulseSyncSimulation(i,20000));
+//			logPulse.log(evaluateResults("logFile.txt", i));
+//			Simulator.getInstance().startSimulation(new FtspSimulation(i,20000));
+//			logFtsp.log(evaluateResults("logFile.txt", i));
+//			
+//		}
 		
 	}
 	

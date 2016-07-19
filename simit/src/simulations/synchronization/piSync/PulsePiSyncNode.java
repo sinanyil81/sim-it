@@ -72,7 +72,7 @@ public class PulsePiSyncNode extends Node implements TimerHandler {
     				.nextInt())));
 
     		outgoingMsg.sequence = 0;
-    		outgoingMsg.rootid = NODE_ID;
+    		outgoingMsg.rootid = ROOT_ID;
     		outgoingMsg.nodeid = NODE_ID;
         }
 
@@ -88,18 +88,25 @@ public class PulsePiSyncNode extends Node implements TimerHandler {
         private static final float BOUNDARY = 2.0f * MAX_PPM * (float) BEACON_RATE;
 
         int lastSkew;
-        float alpha = 1.0f;
+        float K_max = 1.0f / (float) (BEACON_RATE);
+    	float K_min = 0.00000001f;
+    	
+        float alpha = K_max;
         
         private void algorithm(Packet packet) {
+        		if(this.NODE_ID == ROOT_ID)
+        			return;
+        		
                 Register32 updateTime = packet.getEventTime();
 
                 PiSyncMessage msg = (PiSyncMessage) packet.getPayload();
+                
 
                 if( ROOT_ID == msg.rootid && (msg.sequence - outgoingMsg.sequence) > 0 ) {
                     outgoingMsg.sequence = msg.sequence;
                     
                     pulse = new Register32(msg.clock);
-                    pulseTime = processedMsg.getEventTime();
+                    pulseTime = packet.getEventTime();
                     
                     /* for sending data */
                     timer0.startOneshot(1000000);
@@ -111,11 +118,10 @@ public class PulsePiSyncNode extends Node implements TimerHandler {
                 int skew = calculateSkew(packet);
 
                 if (Math.abs(skew) > BOUNDARY) {
-                        logicalClock.setValue(logicalClock.getValue(updateTime).add(skew),
-                                        updateTime);
+                        logicalClock.setValue(msg.clock,updateTime);
                         logicalClock.rate = 0.0f;
                         lastSkew = 0;
-                        alpha = 1.0f;
+                        alpha = K_max;
 
                         return;
                 }
@@ -127,13 +133,13 @@ public class PulsePiSyncNode extends Node implements TimerHandler {
                         alpha /=3.0f;
                 }
                 
-                if (alpha > 1.0f) alpha = 1.0f;         
-                if(alpha < 0.0000000001f) alpha = 0.0000000001f;
+                if (alpha > K_max) alpha = K_max;         
+                if(alpha < K_min) alpha = K_min;
                 
                 lastSkew = skew;
                                 
                 logicalClock.rate += alpha*skew;
-                logicalClock.setValue(((PiSyncMessage) packet.getPayload()).clock, updateTime);
+                logicalClock.setValue(msg.clock, updateTime);
         }
 
         void processMsg() {
@@ -152,31 +158,25 @@ public class PulsePiSyncNode extends Node implements TimerHandler {
         }
 
         private void sendMsg() {
-                Register32 localTime, globalTime;
-                
-                localTime = CLOCK.getValue();
-                
-                if(NODE_ID != ROOT_ID){
-                	Register32 elapsed = localTime.subtract(pulseTime);
-                	elapsed = elapsed.add(elapsed.multiply(logicalClock.rate));               	        		
-                	globalTime = pulse.add(elapsed);
-                }
-                else{
-                	globalTime = new Register32(localTime);        	
-                }
-                
-                outgoingMsg.rootid = ROOT_ID;
-                outgoingMsg.nodeid = NODE_ID;
-                
-                if(NODE_ID == ROOT_ID)
-                	outgoingMsg.sequence++; // maybe set it to zero?
-                
-                outgoingMsg.clock = new Register32(globalTime);
-                
-                Packet packet = new Packet(new PiSyncMessage(outgoingMsg));
-                packet.setEventTime(new Register32(localTime));
-        		sendPacket(packet);
-        }
+        	Register32 localTime;
+
+            localTime = CLOCK.getValue();
+
+            if (outgoingMsg.rootid == NODE_ID) {
+                    outgoingMsg.clock = new Register32(localTime);
+            } else {
+            		Register32 elapsed = localTime.subtract(pulseTime);
+            		elapsed = elapsed.add(elapsed.multiply(logicalClock.rate));               	        		
+                    outgoingMsg.clock = new Register32(pulse.add(elapsed));
+                    outgoingMsg.clock = new Register32(logicalClock.getValue(localTime));
+            }
+            if (outgoingMsg.rootid == NODE_ID)
+                ++outgoingMsg.sequence;
+
+            Packet packet = new Packet(new PiSyncMessage(outgoingMsg));
+            packet.setEventTime(new Register32(localTime));
+    		sendPacket(packet);
+    	}
 
         @Override
         public void on() throws Exception {

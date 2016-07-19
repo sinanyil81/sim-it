@@ -53,7 +53,7 @@ public class PiSyncSimulation extends Simulation implements TimerHandler {
 	Timer timer = new Timer(new Clock32(),this);
 	
 	public static void main(String[] args) {
-		Simulator.getInstance().startSimulation(new PiSyncSimulation(20,20000));
+		Simulator.getInstance().startSimulation(new PiSyncSimulation(20,10000));
 	}
 	
 	public PiSyncSimulation(int numNodes,int durationTime){
@@ -62,7 +62,7 @@ public class PiSyncSimulation extends Simulation implements TimerHandler {
 		DeploymentArea area = new DeploymentArea(300,300,0,2);
 		
 		/* create nodes that are randomly deployed on the given area*/
-		NodeFactory.createNodes("simulations.synchronization.grades.PiSyncNode",numNodes,area);
+		NodeFactory.createNodes("simulations.synchronization.piSync.PulsePiSyncNode",numNodes,area);
 
 		/* create mobility policy that will move nodes */
 //		new MobilityManager("simit.nodes.mobility.RandomWayPoint");

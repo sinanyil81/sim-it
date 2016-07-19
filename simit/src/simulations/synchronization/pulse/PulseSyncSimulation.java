@@ -53,16 +53,16 @@ public class PulseSyncSimulation extends Simulation implements TimerHandler {
 	Timer timer = new Timer(new Clock32(),this);
 	
 	public static void main(String[] args) {
-		Simulator.getInstance().startSimulation(new PulseSyncSimulation(20000));
+		Simulator.getInstance().startSimulation(new PulseSyncSimulation(20,20000));
 	}
 	
-	public PulseSyncSimulation(int durationTime){
+	public PulseSyncSimulation(int numNodes,int durationTime){
 		super(durationTime);
 		
 		DeploymentArea area = new DeploymentArea(300,300,0,2);
 		
 		/* create nodes that are randomly deployed on the given area*/
-		NodeFactory.createNodes("simulations.synchronization.pulse.PulseSyncNode", 20,area);
+		NodeFactory.createNodes("simulations.synchronization.pulse.PulseSyncNode", numNodes,area);
 
 		/* create mobility policy that will move nodes */
 //		new MobilityManager("simit.nodes.mobility.RandomWayPoint");
@@ -81,6 +81,7 @@ public class PulseSyncSimulation extends Simulation implements TimerHandler {
 	@Override
 	public void exit() {
 		logger.close();	
+		GUI.stop();
 		System.out.println("Simulation finished!");
 	}
 
